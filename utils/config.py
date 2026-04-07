@@ -11,9 +11,29 @@ class Config:
     window_width  = 800
     window_height = 800
     FPS           = 60
+    scaling_val   = 4
+    #Sizing Vars:
+    base_tile_size = 16
+    tile_size = base_tile_size * scaling_val
 
+    #Size of map area:
+    game_Map_Starting_Y  = tile_size
+    game_Map_Area_Width  = 10
+    game_Map_Area_Height = 7
+
+    #Pathing Vars:
+    tile_directory = "res/tiles"
+    map_directory  = "res/Rooms"
     #Player config settings:
 
-    #DEBUG SETTINGS:
+    # Game Values:
+    num_tile_options = 10
 
+    #DEBUG SETTINGS:
+    logging_level = "INFO"
+
+    #Clock Vars:
+    Max_Turn_Timer   = 5
+    enemy_Turn_Timer = 3
+    movement_buffer_time_limit_seconds = 0.5
     #=================

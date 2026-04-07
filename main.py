@@ -9,7 +9,7 @@ import os
 
 #local imports:
 import utils.config
-
+from utils.game_panel import Panel
 
 def main():     
     config = utils.config.Config()
@@ -18,19 +18,29 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((config.window_width, config.window_height))
 
+    gamepanel = Panel(config)
     running = True
     while running:
         #Time managing:
         prev_time = int(round(time.time() * 1000))
         #-----------------------------
+        keys = pygame.key.get_pressed()
+        screen.fill(config.BLACK)
+        
+        _key_handler(gamepanel, config)
+        # GAME PANEL CALLS:
+        gamepanel.tick(keys)
+        
+        gamepanel.render(screen)
 
+        pygame.display.flip()
         #-----------------------------
         new_time = int(round(time.time() * 1000))
         time_taken = new_time - prev_time
         if (time_taken < time_between_frame_update):
             time.sleep((time_between_frame_update - time_taken)/1000)
 
-def _key_handler(panel: Panel) -> None:
+def _key_handler(panel: Panel, config: utils.config.Config) -> None:
     for event in pygame.event.get():
 
         # Debug_exit
