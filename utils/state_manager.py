@@ -12,7 +12,7 @@ class StateMachine:
         self.enter_state(self.current_state)
 
     def update(self):
-        # triggers once a turn is finished 
+        print("Current entity: ", self.current_state.id)
         if self.current_state.update():
             self.current_state.reset() # resets the current state
 
@@ -24,13 +24,10 @@ class StateMachine:
             self.enter_state(self.current_state)
     
     def enter_state(self, state):
-        self.playerturn.player.can_act = False
-        for e in self.enemyturn.enemies:
-            e.can_act = False
 
         if state == self.playerturn:
-            self.playerturn.player.can_act = True
-            self.playerturn.start_time = time.time()
+            print("start_turn: Player")
+            self.playerturn.start_turn()
         if state == self.enemyturn:
-            self.enemyturn.enemies[0].can_act = True
-            self.enemyturn.waiting_start_time = time.time()
+            print("start_turn: Enemy")
+            self.enemyturn.start_turn()

@@ -7,6 +7,7 @@ from utils.tile_manager import TileManager
 from utils.state_manager import StateMachine
 from utils.turn_archetecture import PlayerTurn
 from utils.turn_archetecture import EnemyTurn
+from utils.action_queue import ActionQueue
 
 from entities.player import Player
 from entities.bug_enemy import Bug
@@ -19,13 +20,14 @@ class Panel:
         self.config = config
         self.logger = utils.logger.Logger(self.config)
 
+        self.actionQueue = ActionQueue()
         # Here should be a room manager that for each room takes a player and a defined room file which includes all data for each encounter
-        self.playerTurn = PlayerTurn(None, self.config)
-        self.enemyTurn  = EnemyTurn(None, self.config)
+        self.playerTurn = PlayerTurn(None, self.config, self.actionQueue)
+        self.enemyTurn  = EnemyTurn(None, self.config, self.actionQueue)
 
-        self.player = Player(self.config, self.playerTurn.add_action_to_queue)
+        self.player = Player(self.config, self.actionQueue)
 
-        enemy1 = Bug(self.config, self.enemyTurn.add_action_to_queue, "Bug1")
+        enemy1 = Bug(self.config, "Bug1")
         self.enemyarray = [enemy1]
 
         self.playerTurn.player = self.player
@@ -37,11 +39,11 @@ class Panel:
         self.tilemanager.load_room("test")
 
     def tick(self, keys):
+        self.player.process_keys(keys)
+        self.actionQueue.update()
+
         self.statemachine.update()
 
-        self.player.update(keys)
-        for enemy in self.enemyarray:
-            enemy.update()
 
     def render(self, screen: pygame.Surface):
         self.tilemanager.render(screen)

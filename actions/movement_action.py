@@ -3,7 +3,7 @@ import time
 from utils.tile_manager import Room
 
 class move_Tile:
-    def __init__(self, entity, source, target, duration = 2):
+    def __init__(self, entity, source, target, duration = 0.01):
         self.entity = entity
         self.source = source
         self.target = target
@@ -16,11 +16,11 @@ class move_Tile:
     def begin(self):
         self.start_time = time.time()
 
-    def execute(self, room: Room):
+    def execute(self, room: Room = None):
         if self.is_done:
             return
 
-        duration_timer = (time.time - self.start_time) / self.duration
+        duration_timer = (time.time() >= (self.duration + self.start_time))
 
         if duration_timer >= 1:
             self.entity.set_x(self.target[0])

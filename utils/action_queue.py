@@ -7,6 +7,7 @@ class ActionQueue:
         self.queue.append(action)
     
     def update(self):
+        print("Num in queue: ",len(self.queue))
         if self.queue and self.current_action is None:
             self.current_action = self.queue.pop(0)
             self.current_action.begin()
@@ -19,3 +20,6 @@ class ActionQueue:
     
     def is_empty(self):
         return len(self.queue) == 0 and self.current_action is None
+    
+    def clear(self):
+        self.queue.clear()

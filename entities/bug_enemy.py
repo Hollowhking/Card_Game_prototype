@@ -6,7 +6,7 @@ from utils.logger import Logger
 from actions.movement_action import move_Tile
 
 class Bug:
-    def __init__(self, config: Config, action_callback, name):
+    def __init__(self, config: Config, name):
         self.config = config
         self.logger = Logger(self.config)
         #
@@ -20,19 +20,9 @@ class Bug:
         self.draw_box = (self.screen_x, self.screen_y, self.config.tile_size, self.config.tile_size)
 
         self.can_act = False
-        self.action_callback = action_callback
 
         self.last_valid_action = time.time()
         self.scale_location()
-
-
-    def update(self):
-        if not self.can_act:
-            return
-        
-        #once per each AP call this: 
-        self.decideActions()
-
         
     def render(self, screen: pygame.Surface):
         self.scale_location()
@@ -41,17 +31,11 @@ class Bug:
         pygame.draw.rect(screen, self.config.BLUE, self.draw_box)
 
 
-    def decideActions(self):
-        if self.actionAllowed():
-            move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y))
-            self.action_callback(move_action, self)
+    def decideActions(self, queue):
+        move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y), 1)
+        print("A")
+        queue.add(move_action)
 
-    def actionAllowed(self):
-        cur_time = time.time()
-        if (self.last_valid_action + self.config.movement_buffer_time_limit_seconds < cur_time):
-            return True
-        else:
-            return False
     #===================
     def reset_turn(self):
         self.can_act = False

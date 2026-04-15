@@ -6,9 +6,10 @@ import time
 from utils.config import Config
 from utils.logger import Logger
 from actions.movement_action import move_Tile
+from utils.action_queue import ActionQueue
 
 class Player:
-    def __init__(self, config: Config, action_callback):
+    def __init__(self, config: Config, action_queue: ActionQueue):
         self.config = config
         self.logger = Logger(self.config)
         #keyboard:
@@ -30,49 +31,42 @@ class Player:
 
         self.current_action  = None
         self.end_turn        = False
-        self.can_act         = True
-        self.action_callback = action_callback
+        self.action_queue = action_queue
 
         self.last_valid_key_press = time.time()
 
-    def update(self, keys):
-        if not self.can_act:
-            return
-
-        self.process_keys(keys)
-        self.update_x_movement()
+    def render(self, screen: pygame.Surface):
         # turns tile location to screen location happens last:
         self.scale_location()
         self.draw_box = (self.screen_x, self.screen_y, self.config.tile_size, self.config.tile_size)
 
-
-    def render(self, screen: pygame.Surface):
         pygame.draw.rect(screen, self.config.RED, self.draw_box)
 
     def update_x_movement(self):
         if (self.w_press):
             move_action = move_Tile(self, (self.x, self.y), (self.x, self.y - 1))
             self.w_press = False
-            if (self.can_act):
-                self.action_callback(move_action)
+            self.create_action(move_action)
+
 
         elif (self.a_press):
             move_action = move_Tile(self, (self.x, self.y), (self.x - 1, self.y))
             self.a_press = False
-            if (self.can_act):
-                self.action_callback(move_action)
+            self.create_action(move_action)
+
 
         elif (self.s_press):
             move_action = move_Tile(self, (self.x, self.y), (self.x, self.y + 1))
             self.s_press = False
-            if (self.can_act):
-                self.action_callback(move_action)
+            self.create_action(move_action)
 
         elif (self.d_press):
             move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y))
             self.d_press = False
-            if (self.can_act):
-                self.action_callback(move_action)
+            self.create_action(move_action)
+
+    def create_action(self, action):
+        self.action_queue.add(action)
 
     def process_keys(self, keys):
         if (self.end_turn):
@@ -123,6 +117,8 @@ class Player:
                     self.last_valid_key_press = time.time()
                     self.end_turn = True
         self.mouse_x, self.mouse_y = pygame.mouse.get_pos()
+
+        self.update_x_movement()
 
 
     def reset_turn(self):
