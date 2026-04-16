@@ -6,15 +6,15 @@ from utils.logger import Logger
 from actions.movement_action import move_Tile
 
 class Bug:
-    def __init__(self, config: Config, name):
+    def __init__(self, config: Config, name, X: int, Y: int):
         self.config = config
         self.logger = Logger(self.config)
         #
 
         #========================
         self.name = name
-        self.x = 2
-        self.y = 2
+        self.x = X
+        self.y = Y
         self.screen_x = self.x
         self.screen_y = self.y
         self.draw_box = (self.screen_x, self.screen_y, self.config.tile_size, self.config.tile_size)

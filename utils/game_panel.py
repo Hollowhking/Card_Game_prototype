@@ -27,8 +27,9 @@ class Panel:
 
         self.player = Player(self.config, self.actionQueue)
 
-        enemy1 = Bug(self.config, "Bug1")
-        self.enemyarray = [enemy1]
+        enemy1 = Bug(self.config, "Bug1", 2, 2)
+        enemy2 = Bug(self.config, "Bug2", 2, 4)
+        self.enemyarray = [enemy1, enemy2]
 
         self.playerTurn.player = self.player
         self.enemyTurn.enemies = self.enemyarray
