@@ -13,7 +13,7 @@ from entities.player import Player
 from entities.bug_enemy import Bug
 # What the game panel will handle:
 # Running tick and render for the manager objects: Tilemanager, player, update the room manager which will have the list of monsters
-# 
+#  
 #
 class Panel:
     def __init__(self, config: utils.config.Config):
@@ -45,6 +45,12 @@ class Panel:
 
         self.statemachine.update()
 
+
+# tick will have to check if the player is moving to another room
+# which will be handled by a int in the tile manager so if it 
+# is 0 the player is not within a doorway, if 1,2,3,4 it is in one
+# of the doorways depending on the top left right bottom of the 
+# room
 
     def render(self, screen: pygame.Surface):
         self.tilemanager.render(screen)
