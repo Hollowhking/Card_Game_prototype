@@ -3,7 +3,7 @@ import time
 from utils.tile_manager import Room
 
 class move_Tile:
-    def __init__(self, entity, source, target, duration = 0.01):
+    def __init__(self, entity, source, target, duration = 0.1):
         self.entity = entity
         self.source = source
         self.target = target

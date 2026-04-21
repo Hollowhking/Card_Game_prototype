@@ -3,14 +3,10 @@ import pygame
 
 import utils.config
 import utils.logger
-from utils.tile_manager import TileManager
-from utils.state_manager import StateMachine
-from utils.turn_archetecture import PlayerTurn
-from utils.turn_archetecture import EnemyTurn
-from utils.action_queue import ActionQueue
 
 from entities.player import Player
-from entities.bug_enemy import Bug
+from world_utils.map_manager import Map_Manager
+from utils.tile_manager import TileManager
 # What the game panel will handle:
 # Running tick and render for the manager objects: Tilemanager, player, update the room manager which will have the list of monsters
 #  
@@ -20,31 +16,14 @@ class Panel:
         self.config = config
         self.logger = utils.logger.Logger(self.config)
 
-        self.actionQueue = ActionQueue()
-        # Here should be a room manager that for each room takes a player and a defined room file which includes all data for each encounter
-        self.playerTurn = PlayerTurn(None, self.config, self.actionQueue)
-        self.enemyTurn  = EnemyTurn(None, self.config, self.actionQueue)
+        self.player = Player(self.config, None, "001")
+        self.tileManager = TileManager(self.config)
 
-        self.player = Player(self.config, self.actionQueue)
-
-        enemy1 = Bug(self.config, "Bug1", 2, 2)
-        enemy2 = Bug(self.config, "Bug2", 2, 4)
-        self.enemyarray = [enemy1, enemy2]
-
-        self.playerTurn.player = self.player
-        self.enemyTurn.enemies = self.enemyarray
-
-        self.statemachine = StateMachine(self.playerTurn, self.enemyTurn)
-        #===========================================================
-        self.tilemanager  = TileManager(self.config)
-        self.tilemanager.load_room("test")
+        self.map_manager = Map_Manager(self.config, [], self.player, self.tileManager)
 
     def tick(self, keys):
         self.player.process_keys(keys)
-        self.actionQueue.update()
-
-        self.statemachine.update()
-
+        self.map_manager.update()
 
 # tick will have to check if the player is moving to another room
 # which will be handled by a int in the tile manager so if it 
@@ -53,7 +32,5 @@ class Panel:
 # room
 
     def render(self, screen: pygame.Surface):
-        self.tilemanager.render(screen)
-        self.player.render(screen)
-        for enemy in self.enemyarray:
-            enemy.render(screen)
+        self.tileManager.render(screen)
+        self.map_manager.render(screen)

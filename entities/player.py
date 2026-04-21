@@ -9,9 +9,10 @@ from actions.movement_action import move_Tile
 from utils.action_queue import ActionQueue
 
 class Player:
-    def __init__(self, config: Config, action_queue: ActionQueue):
+    def __init__(self, config: Config, action_queue: ActionQueue, id="000"):
         self.config = config
         self.logger = Logger(self.config)
+        self.log_id = id
         #keyboard:
         self.w_press       = False
         self.a_press       = False
@@ -35,6 +36,8 @@ class Player:
 
         self.last_valid_key_press = time.time()
 
+        self.items = []
+
     def render(self, screen: pygame.Surface):
         # turns tile location to screen location happens last:
         self.scale_location()
@@ -43,25 +46,27 @@ class Player:
         pygame.draw.rect(screen, self.config.RED, self.draw_box)
 
     def update_x_movement(self):
+        if (self.action_queue == None): return
+
         if (self.w_press):
-            move_action = move_Tile(self, (self.x, self.y), (self.x, self.y - 1))
+            move_action = move_Tile(self, (self.x, self.y), (self.x, self.y - 1), self.config.move_action_dur)
             self.w_press = False
             self.create_action(move_action)
 
 
         elif (self.a_press):
-            move_action = move_Tile(self, (self.x, self.y), (self.x - 1, self.y))
+            move_action = move_Tile(self, (self.x, self.y), (self.x - 1, self.y), self.config.move_action_dur)
             self.a_press = False
             self.create_action(move_action)
 
 
         elif (self.s_press):
-            move_action = move_Tile(self, (self.x, self.y), (self.x, self.y + 1))
+            move_action = move_Tile(self, (self.x, self.y), (self.x, self.y + 1), self.config.move_action_dur)
             self.s_press = False
             self.create_action(move_action)
 
         elif (self.d_press):
-            move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y))
+            move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y), self.config.move_action_dur)
             self.d_press = False
             self.create_action(move_action)
 
@@ -142,6 +147,8 @@ class Player:
     def set_y(self, y):
         self.y = y
 
+    def set_actionQueue(self, actionqueue: ActionQueue):
+        self.action_queue = self.action_queue
 
     def update_config(self, config: Config):
         self.config = config

@@ -38,6 +38,11 @@ class TileManager:
             scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
             self.tiles_array[0] = Tile(scaled_image, True, False)
 
+            #GRASS
+            tile_image   = background_Tile_Set_img.subsurface(pygame.Rect((self.config.base_tile_size * 5), 0, self.config.base_tile_size, self.config.base_tile_size))
+            scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
+            self.tiles_array[5] = Tile(scaled_image, False, False)
+
             tile_image   = background_Tile_Set_img.subsurface(pygame.Rect((self.config.base_tile_size * 6), 0, self.config.base_tile_size, self.config.base_tile_size))
             scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
             self.tiles_array[6] = Tile(scaled_image, False, False)

@@ -8,10 +8,10 @@ class Config:
     RED    = (255,0,0)
     BLUE   = (0, 0, 255)
     #MetaVariables:
-    window_width  = 800
-    window_height = 800
+    window_width  = 1200
+    window_height = 1200
     FPS           = 60
-    scaling_val   = 4
+    scaling_val   = 6
     #Sizing Vars:
     base_tile_size = 16
     tile_size = base_tile_size * scaling_val
@@ -36,4 +36,6 @@ class Config:
     Max_Turn_Timer   = 5
     enemy_Turn_Timer = 3
     movement_buffer_time_limit_seconds = 0.5
+
+    move_action_dur = 0.01
     #=================
