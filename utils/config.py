@@ -8,18 +8,18 @@ class Config:
     RED    = (255,0,0)
     BLUE   = (0, 0, 255)
     #MetaVariables:
-    window_width  = 1200
+    window_width  = 1600
     window_height = 1200
     FPS           = 60
-    scaling_val   = 6
+    scaling_val   = 5
     #Sizing Vars:
     base_tile_size = 16
     tile_size = base_tile_size * scaling_val
 
     #Size of map area:
     game_Map_Starting_Y  = tile_size
-    game_Map_Area_Width  = 10
-    game_Map_Area_Height = 7
+    game_Map_Area_Width  = 16
+    game_Map_Area_Height = 10
 
     #Pathing Vars:
     tile_directory = "res/tiles"
@@ -31,6 +31,7 @@ class Config:
 
     #DEBUG SETTINGS:
     logging_level = "INFO"
+    highlightHoverTile = True
 
     #Clock Vars:
     Max_Turn_Timer   = 5

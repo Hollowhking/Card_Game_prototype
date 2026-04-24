@@ -40,10 +40,20 @@ class Player:
 
     def render(self, screen: pygame.Surface):
         # turns tile location to screen location happens last:
+        if (self.config.highlightHoverTile):
+            self.highlight_tile_mouse(screen)
+        
         self.scale_location()
         self.draw_box = (self.screen_x, self.screen_y, self.config.tile_size, self.config.tile_size)
 
         pygame.draw.rect(screen, self.config.RED, self.draw_box)
+    
+    def highlight_tile_mouse(self, screen: pygame.Surface):
+        #only when casting a spell with a direction or movement component should this be used
+        self.mouse_x_tile = int(self.mouse_x / self.config.tile_size) * self.config.tile_size
+        self.mouse_y_tile = int(self.mouse_y / self.config.tile_size) * self.config.tile_size
+
+        pygame.draw.rect(screen, self.config.L_GREY, (self.mouse_x_tile, self.mouse_y_tile, self.config.tile_size, self.config.tile_size))
 
     def update_x_movement(self):
         if (self.action_queue == None): return

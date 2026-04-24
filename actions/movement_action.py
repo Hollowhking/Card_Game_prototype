@@ -1,6 +1,6 @@
 import time
 
-from utils.tile_manager import Room
+from utils.tile_manager import RoomObj
 
 class move_Tile:
     def __init__(self, entity, source, target, duration = 0.1):
@@ -16,7 +16,7 @@ class move_Tile:
     def begin(self):
         self.start_time = time.time()
 
-    def execute(self, room: Room = None):
+    def execute(self, room: RoomObj = None):
         if self.is_done:
             return
 

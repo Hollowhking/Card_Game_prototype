@@ -4,6 +4,7 @@ from pathlib import Path
 
 from utils.config import Config
 from utils.logger import Logger
+from world_utils.room import RoomObj
 class Tile:
     def __init__(self, image=None, collision=False, distructable=False):
         self.image        = image
@@ -14,9 +15,7 @@ class Tile:
         return self.image
 
 #=====================
-class Room:
-    def __init__(self):
-        pass
+
 #=====================
 
 class TileManager:
@@ -37,6 +36,18 @@ class TileManager:
             tile_image   = background_Tile_Set_img.subsurface(pygame.Rect(0, 0, self.config.base_tile_size, self.config.base_tile_size))
             scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
             self.tiles_array[0] = Tile(scaled_image, True, False)
+
+            #Void Tile:
+            tile_image   = background_Tile_Set_img.subsurface(pygame.Rect((self.config.base_tile_size * 3), 0, self.config.base_tile_size, self.config.base_tile_size))
+            scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
+            self.tiles_array[3] = Tile(scaled_image, True, False)
+
+
+            #CobbleStone:
+            tile_image   = background_Tile_Set_img.subsurface(pygame.Rect((self.config.base_tile_size * 4), 0, self.config.base_tile_size, self.config.base_tile_size))
+            scaled_image = pygame.transform.scale(tile_image, (self.config.tile_size, self.config.tile_size))
+            self.tiles_array[4] = Tile(scaled_image, True, False)
+
 
             #GRASS
             tile_image   = background_Tile_Set_img.subsurface(pygame.Rect((self.config.base_tile_size * 5), 0, self.config.base_tile_size, self.config.base_tile_size))

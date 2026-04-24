@@ -32,8 +32,9 @@ class Bug:
 
 
     def decideActions(self, queue):
-        move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y), 1)
-        print("A")
+        move_action = move_Tile(self, (self.x, self.y), (self.x + 1, self.y), 0.5)
+        queue.add(move_action)
+        move_action = move_Tile(self, (self.x, self.y), (self.x + 2, self.y), 0.5)
         queue.add(move_action)
 
     #===================
